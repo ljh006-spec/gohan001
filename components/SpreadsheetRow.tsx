@@ -61,7 +61,7 @@ export const SpreadsheetRow: React.FC<SpreadsheetRowProps> = ({
           type="text"
           value={record.category}
           onChange={(e) => onUpdate(record.id, 'category', e.target.value)}
-          placeholder="영역 (예: 진로)"
+          placeholder="과세특, 행발, 진로..."
           className="w-full bg-transparent p-2 rounded border border-transparent hover:border-slate-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none transition-all text-sm"
         />
       </td>

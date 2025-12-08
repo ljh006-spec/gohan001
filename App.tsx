@@ -4,7 +4,7 @@ import { SpreadsheetRow } from './components/SpreadsheetRow';
 import { Toolbar } from './components/Toolbar';
 import { ApiKeySettings, loadSavedApiKey } from './components/ApiKeySettings';
 import { generateStudentEvaluation, updateApiKey } from './services/geminiService';
-import { Plus, Terminal, BookOpen, Check, FileText, Settings, HelpCircle } from 'lucide-react';
+import { Plus, Terminal, BookOpen, Check, FileText, Settings, HelpCircle, Users, BarChart3 } from 'lucide-react';
 
 const DEFAULT_INSTRUCTION = `# 1. 역할(Role)
 
@@ -130,6 +130,7 @@ const App: React.FC = () => {
   // Default Settings for new rows
   const [defaultCategory, setDefaultCategory] = useState('');
   const [defaultTargetLength, setDefaultTargetLength] = useState(500);
+  const [rowCountInput, setRowCountInput] = useState(1);
   
   // Custom Instruction State
   const [showPrompt, setShowPrompt] = useState(false);
@@ -312,10 +313,11 @@ const App: React.FC = () => {
     reader.readAsText(file);
   }, [defaultCategory, defaultTargetLength]);
 
+  const completedCount = records.filter(r => r.status === RecordStatus.COMPLETED).length;
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
       <Toolbar 
-        onAddRows={handleAddRows}
         onExport={handleExportCSV}
         tone={tone}
         setTone={setTone}
@@ -363,7 +365,7 @@ const App: React.FC = () => {
                         <strong className="font-semibold text-white">기본 설정:</strong> 테이블 상단의 '영역', '목표 글자수'에 적용할 내용을 입력합니다.(학생 추가 시 이 설정이 기본 적용됩니다.)
                     </li>
                     <li>
-                        <strong className="font-semibold text-white">학생 추가:</strong> 툴바 상단의 <strong className="text-amber-300">'N 명 추가'</strong> 버튼이나 테이블 하단의 <strong className="text-amber-300">'학생 추가하기'</strong> 버튼으로 작업할 행을 만듭니다.
+                        <strong className="font-semibold text-white">학생 추가:</strong> 테이블 상단의 <strong className="text-amber-300">'N 명 추가'</strong> 버튼이나 테이블 하단의 <strong className="text-amber-300">'학생 추가하기'</strong> 버튼으로 작업할 행을 만듭니다.
                     </li>
                     <li>
                         <strong className="font-semibold text-white">정보 입력:</strong> 학생 이름, 영역, 목표 글자수, 그리고 필수 요소인 <strong className="text-amber-300">'키워드 및 관찰 내용'</strong>을 각 행에 입력합니다. 키워드가 구체적일수록 AI가 더 좋은 결과를 생성합니다.
@@ -372,7 +374,7 @@ const App: React.FC = () => {
                         <strong className="font-semibold text-white">AI 생성:</strong> 개별 생성은 해당 행의 <strong className="text-amber-300">반짝이는 아이콘</strong>을 클릭하세요.
                     </li>
                     <li>
-                        <strong className="font-semibold text-white">파일 관리:</strong> <strong className="text-amber-300">'양식 다운'</strong>으로 CSV 템플릿을 받고, <strong className="text-amber-300">'파일 업로드'</strong>로 여러 학생 정보를 한번에 불러올 수 있습니다. 작업이 끝나면 <strong className="text-amber-300">내보내기</strong>로 결과를 저장하세요.
+                        <strong className="font-semibold text-white">파일 관리:</strong> <strong className="text-amber-300">'양식 다운'</strong>으로 CSV 템플릿을 받고, <strong className="text-amber-300">'파일 업로드'</strong>로 여러 학생 정보를 한번에 불러올 수 있습니다. 작업이 끝나면 <strong className="text-amber-300">'내보내기'</strong>로 결과를 저장하세요.
                     </li>
                 </ol>
                 <div className="flex justify-end mt-4">
@@ -484,7 +486,7 @@ const App: React.FC = () => {
                     type="text"
                     value={defaultCategory}
                     onChange={(e) => setDefaultCategory(e.target.value)}
-                    placeholder="예: 진로, 자율"
+                    placeholder="예: 과세특, 행발 등"
                     className="w-32 bg-white border border-slate-300 rounded px-2 py-1 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-all"
                 />
                 </div>
@@ -503,6 +505,42 @@ const App: React.FC = () => {
                     <span className="absolute right-2 top-1.5 text-[10px] text-slate-400 pointer-events-none">자</span>
                 </div>
                 </div>
+
+                <div className="flex items-center gap-2 ml-2 pl-4 border-l border-slate-300">
+                    <div className="flex items-center gap-1 bg-white border border-slate-300 rounded p-0.5 shadow-sm">
+                        <Users className="w-4 h-4 text-slate-400 ml-2" />
+                        <input
+                            type="number"
+                            min="1"
+                            max="50"
+                            value={rowCountInput}
+                            onChange={(e) => setRowCountInput(Math.max(1, parseInt(e.target.value) || 0))}
+                            className="w-12 text-sm outline-none text-right font-medium text-slate-700 py-1"
+                        />
+                        <span className="text-xs text-slate-500 mr-2">명</span>
+                        <button
+                            onClick={() => handleAddRows(rowCountInput)}
+                            className="flex items-center gap-1 px-3 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-md text-sm font-medium transition-all"
+                        >
+                            <Plus className="w-3.5 h-3.5" />
+                            추가
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div className="flex items-center gap-4 text-sm font-medium text-slate-600 bg-white px-3 py-1.5 rounded-lg border border-slate-200 shadow-sm">
+                <div className="flex items-center gap-1.5">
+                    <span className="text-slate-400">총 인원:</span>
+                    <span className="text-indigo-600 font-bold">{records.length}</span>
+                    <span className="text-slate-400">명</span>
+                </div>
+                <div className="h-4 w-px bg-slate-300"></div>
+                <div className="flex items-center gap-1.5">
+                    <span className="text-slate-400">작성 완료:</span>
+                    <span className="text-green-600 font-bold">{completedCount}</span>
+                    <span className="text-slate-400">명</span>
+                </div>
             </div>
             
           </div>
@@ -511,13 +549,13 @@ const App: React.FC = () => {
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-slate-50 border-b border-slate-200 text-xs uppercase tracking-wider text-slate-500 font-semibold">
-                  <th className="p-3 border-r border-slate-200 w-[120px]">학생 이름</th>
-                  <th className="p-3 border-r border-slate-200 w-[150px]">영역</th>
+                  <th className="p-3 border-r border-slate-200 w-[120px]">학생 이름<span className="ml-1 text-[10px] font-normal text-slate-400 lowercase">(선택)</span></th>
+                  <th className="p-3 border-r border-slate-200 w-[150px]">영역<span className="ml-1 text-[10px] font-normal text-slate-400 lowercase">(선택)</span></th>
                   <th className="p-3 border-r border-slate-200 w-[90px]">글자수
                     <span className="ml-1 text-[10px] font-normal text-slate-400 lowercase">(내외)</span></th>
                   <th className="p-3 border-r border-slate-200 w-[30%]">
                     키워드 및 관찰 내용 
-                    <span className="ml-1 text-[10px] font-normal text-slate-400 lowercase">(입력필수)</span>
+                    <span className="ml-1 text-[10px] font-normal text-slate-400 lowercase">(필수)</span>
                   </th>
                   <th className="p-3 border-r border-slate-200">생성 결과 (수정 가능)</th>
                   <th className="p-3 w-[100px] text-center">관리</th>
@@ -554,11 +592,24 @@ const App: React.FC = () => {
           </button>
           
         </div>
-      </main>
 
-      <footer className="p-4 text-center text-slate-400 text-xs">
-        <p>Google Gemini 2.5 Flash를 사용하여 생성됩니다. 생성된 내용은 반드시 검토 후 사용하세요.</p>
-      </footer>
+        {/* Footer info moved here */}
+        <div className="max-w-[1600px] mx-auto mt-4 text-center text-slate-500 text-sm space-y-1">
+            <p>
+            </p>
+            <p className="font-semibold text-slate-700">
+                    이 앱은 고한중학교 교사의 생활기록부 작성을 돕기 위해 만들어졌습니다. 사용에 있어서 책임은 전적으로 사용자에게 있습니다. ^^; 
+            </p>
+            <p className="font-semibold text-slate-700"> <span className="text-red-600">외부 공유는 하지 말아주세요.</span>
+            </p>
+            <p></p>
+            <p> Google Gemini 2.5 Flash를 사용하여 생성됩니다. 생성된 내용은 반드시 검토 후 사용하세요.
+            </p>
+            <p>
+                무료 API key를 사용하는 경우 할당량이 초과하여 응답이 제한될 수 있습니다.
+            </p>
+        </div>
+      </main>
     </div>
   );
 };

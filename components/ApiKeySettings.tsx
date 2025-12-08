@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Key, Save, Wifi, X, AlertCircle, CheckCircle, Eye, EyeOff } from 'lucide-react';
+import { Key, Save, Wifi, X, AlertCircle, CheckCircle, Eye, EyeOff, ExternalLink } from 'lucide-react';
 import { testConnection, updateApiKey } from '../services/geminiService';
 
 interface ApiKeySettingsProps {
@@ -115,6 +115,28 @@ export const ApiKeySettings: React.FC<ApiKeySettingsProps> = ({ onClose }) => {
         </div>
         
         <div className="p-6">
+            {/* Guide Section */}
+            <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 mb-5">
+                <h3 className="text-sm font-bold text-slate-700 flex items-center gap-2 mb-2">
+                    <span className="bg-indigo-100 text-indigo-600 p-1 rounded">TIP</span> 
+                    무료 API Key 발급 방법
+                </h3>
+                <ol className="list-decimal list-inside space-y-2 text-xs text-slate-600 ml-1">
+                    <li>
+                        <a 
+                            href="https://aistudio.google.com/app/apikey" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-indigo-600 font-bold hover:underline inline-flex items-center gap-1"
+                        >
+                            Google AI Studio 접속 <ExternalLink className="w-3 h-3" />
+                        </a>
+                    </li>
+                    <li>구글 계정으로 로그인 후 <strong>[Create API key]</strong> 버튼 클릭</li>
+                    <li>생성된 키를 복사하여 아래 입력창에 붙여넣기</li>
+                </ol>
+            </div>
+
             <div className="mb-4">
                 <label className="block text-sm font-semibold text-slate-700 mb-2">Google Gemini API Key</label>
                 <div className="relative">

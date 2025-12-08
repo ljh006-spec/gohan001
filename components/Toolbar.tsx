@@ -1,9 +1,8 @@
 import React, { useRef } from 'react';
-import { Plus, Download, FileText, Terminal, BookOpen, Users, Upload, FileSpreadsheet, HelpCircle, Key } from 'lucide-react';
+import { Download, FileText, Terminal, BookOpen, Upload, FileSpreadsheet, HelpCircle, Key } from 'lucide-react';
 import { EvaluationTone } from '../types';
 
 interface ToolbarProps {
-  onAddRows: (count: number) => void;
   onExport: () => void;
   tone: EvaluationTone;
   setTone: (tone: EvaluationTone) => void;
@@ -19,7 +18,6 @@ interface ToolbarProps {
 }
 
 export const Toolbar: React.FC<ToolbarProps> = ({ 
-  onAddRows, 
   onExport, 
   tone, 
   setTone,
@@ -33,7 +31,6 @@ export const Toolbar: React.FC<ToolbarProps> = ({
   onToggleUsage,
   onOpenApiKeySettings
 }) => {
-  const [rowCountInput, setRowCountInput] = React.useState(1);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,8 +52,8 @@ export const Toolbar: React.FC<ToolbarProps> = ({
                 <FileText className="w-5 h-5 text-white" />
             </div>
             <h1 className="text-xl font-bold text-slate-800">
-                <span className="bg-gradient-to-r from-indigo-500 to-purple-500 text-transparent bg-clip-text font-extrabold mr-1">GH</span>
-                Smart 생기부 입력 도우미
+                <span className="bg-gradient-to-r from-indigo-500 to-purple-500 text-transparent bg-clip-text font-extrabold mr-1">'GoHan M'</span>
+                Smart 생기부 입력 도우미(배포용_ver_1.0)
             </h1>
          </div>
          <div className="flex items-center gap-2">
@@ -64,13 +61,13 @@ export const Toolbar: React.FC<ToolbarProps> = ({
               onClick={onToggleUsage}
               className={`flex items-center gap-2 px-3 py-1.5 rounded-full transition-all text-sm font-bold shadow-sm hover:shadow-md transform active:scale-95 border ${
                 showUsage
-                  ? 'bg-amber-200 text-amber-900 border-amber-300 ring-2 ring-amber-200 ring-offset-1'
-                  : 'bg-amber-100 text-amber-800 border-amber-200 hover:bg-amber-200'
+                  ? 'bg-red-100 text-red-700 border-red-300 ring-2 ring-red-200 ring-offset-1'
+                  : 'bg-red-50 text-red-600 border-red-200 hover:bg-red-100'
               }`}
               title="사용 방법 보기"
             >
               <HelpCircle className="w-4 h-4" />
-              <span>사용법</span>
+              <span>사용법(필독)</span>
             </button>
             <button
               onClick={onOpenApiKeySettings}
@@ -112,52 +109,29 @@ export const Toolbar: React.FC<ToolbarProps> = ({
 
         <button
           onClick={onTogglePrompt}
-          className={`flex items-center gap-2 px-3 py-2 border rounded-lg transition-all text-sm font-medium shadow-sm ${
+          className={`flex items-center gap-2 px-3 py-2 border rounded-lg transition-all text-sm font-bold shadow-sm ${
             showPrompt 
-              ? 'bg-slate-800 border-slate-800 text-white hover:bg-slate-700' 
-              : 'bg-white border-slate-300 text-slate-700 hover:bg-slate-50 hover:border-slate-400'
+              ? 'bg-amber-700 border-amber-700 text-white hover:bg-amber-800' 
+              : 'bg-white border-amber-200 text-amber-800 hover:bg-amber-50'
           }`}
           title="특별한 요구사항 입력"
         >
           <Terminal className="w-4 h-4" />
-          <span className="hidden sm:inline">작성 규칙</span>
+          <span className="hidden sm:inline">생성 규칙 입력</span>
         </button>
 
         <button
           onClick={onToggleReference}
-          className={`flex items-center gap-2 px-3 py-2 border rounded-lg transition-all text-sm font-medium shadow-sm ${
+          className={`flex items-center gap-2 px-3 py-2 border rounded-lg transition-all text-sm font-bold shadow-sm ${
             showReference 
-              ? 'bg-emerald-700 border-emerald-700 text-white hover:bg-emerald-600' 
-              : 'bg-white border-slate-300 text-slate-700 hover:bg-slate-50 hover:border-slate-400'
+              ? 'bg-amber-700 border-amber-700 text-white hover:bg-amber-800' 
+              : 'bg-white border-amber-200 text-amber-800 hover:bg-amber-50'
           }`}
           title="참고할 문체/예시 입력"
         >
           <BookOpen className="w-4 h-4" />
-          <span className="hidden sm:inline">작성 예시</span>
+          <span className="hidden sm:inline">생성 예시 입력</span>
         </button>
-
-        <div className="h-6 w-px bg-slate-300 mx-1 hidden sm:block"></div>
-
-        {/* Multi-row Add */}
-        <div className="flex items-center gap-1 bg-white border border-slate-300 rounded-lg p-1 pl-3 shadow-sm">
-            <Users className="w-4 h-4 text-slate-400" />
-            <input
-                type="number"
-                min="1"
-                max="50"
-                value={rowCountInput}
-                onChange={(e) => setRowCountInput(Math.max(1, parseInt(e.target.value) || 0))}
-                className="w-10 text-sm outline-none text-right font-medium text-slate-700"
-            />
-            <span className="text-xs text-slate-500 mr-1">명</span>
-            <button
-                onClick={() => onAddRows(rowCountInput)}
-                className="flex items-center gap-1 px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-md text-sm font-medium transition-all"
-            >
-                <Plus className="w-3.5 h-3.5" />
-                추가
-            </button>
-        </div>
 
         <div className="h-6 w-px bg-slate-300 mx-1 hidden sm:block"></div>
 
