@@ -87,7 +87,7 @@ export const SpreadsheetRow: React.FC<SpreadsheetRowProps> = ({
         <textarea
           value={record.keywords}
           onChange={(e) => onUpdate(record.id, 'keywords', e.target.value)}
-          placeholder="학생의 특징, 활동 내용을 키워드나 문장으로 입력하세요..."
+          placeholder="학생의 특징, 활동 내용, 성취기준, 성취수준 등을 키워드나 문장으로 입력하세요...'생성규칙'과 '생성예시'는 접속할 때마다 초기화 됩니다. 입력상태를 확인하세요"
           className="w-full min-h-[80px] bg-transparent p-2 rounded border border-transparent hover:border-slate-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none transition-all resize-y text-sm leading-relaxed"
         />
       </td>
