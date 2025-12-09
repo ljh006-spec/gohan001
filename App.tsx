@@ -359,7 +359,7 @@ const App: React.FC = () => {
                         <strong className="font-semibold text-white">API Key 설정:</strong> 상단 툴바의 <strong className="text-amber-300">'Key 설정'</strong> 버튼을 눌러 본인의 Gemini API Key를 저장하세요. 키는 로컬에 안전하게 저장됩니다.
                     </li>
                     <li>
-                        <strong className="font-semibold text-white">'작성 규칙', '작성 예시' 설정:</strong> 툴바 상단의 해당 버튼을 클릭하고 규칙과 예시를 입력합니다.(선택 사항으로 필요 시 '기본 예시' 버튼을 활용하여 내용 입력도 가능합니다. 규칙은 입력 강력 추천)
+                        <strong className="font-semibold text-white">'생성 규칙', '생성 예시' 설정:</strong> 툴바 상단의 해당 버튼을 클릭하고 규칙과 예시를 입력합니다.(선택 사항으로 필요 시 <strong className="text-amber-300">'기본 예시' </strong>버튼을 활용하여 내용 입력도 가능합니다. 규칙은 입력 강력 추천)
                     </li>
                     <li>
                         <strong className="font-semibold text-white">기본 설정:</strong> 테이블 상단의 '영역', '목표 글자수'에 적용할 내용을 입력합니다.(학생 추가 시 이 설정이 기본 적용됩니다.)
