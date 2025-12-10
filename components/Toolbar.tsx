@@ -53,7 +53,7 @@ export const Toolbar: React.FC<ToolbarProps> = ({
             </div>
             <h1 className="text-xl font-bold text-slate-800">
                 <span className="bg-gradient-to-r from-indigo-500 to-purple-500 text-transparent bg-clip-text font-extrabold mr-1">'GoHan M'</span>
-                Smart 생기부 입력 도우미(배포용_ver_1.0)
+                Smart 생기부 입력 도우미(배포용_ver_1.1)
             </h1>
          </div>
          <div className="flex items-center gap-2">

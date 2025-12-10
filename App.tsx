@@ -134,7 +134,7 @@ const App: React.FC = () => {
   
   // Custom Instruction State
   const [showPrompt, setShowPrompt] = useState(false);
-  const [customInstruction, setCustomInstruction] = useState('');
+  const [customInstruction, setCustomInstruction] = useState(DEFAULT_INSTRUCTION);
 
   // Reference Example State
   const [showReference, setShowReference] = useState(false);
